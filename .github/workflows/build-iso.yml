@@ -20,17 +20,31 @@ jobs:
 
       - name: Gerar ISO (Debian trixie em container privilegiado)
         run: |
+          set -o pipefail
           chmod +x build.sh config/hooks/live/*.hook.chroot
           docker run --rm --privileged \
             -v "$PWD":/work -w /work \
             -e DEBIAN_FRONTEND=noninteractive \
             debian:trixie \
-            bash -c "apt-get update && apt-get install -y sudo && ./build.sh"
+            bash -c "apt-get update && apt-get install -y sudo && ./build.sh" \
+            2>&1 | tee docker-build.log
+
+      - name: Mostrar fim do log em caso de falha
+        if: failure()
+        run: |
+          echo "===== ULTIMAS 120 LINHAS DO BUILD ====="
+          tail -n 120 docker-build.log || true
+          echo "===== LINHAS COM ERRO ====="
+          grep -nE "^E:|Err:|ERROR|error:|No such file|Unable to locate|not found" docker-build.log | tail -n 40 || true
+
+      - name: Ajustar permissoes (build rodou como root)
+        if: always()
+        run: sudo chown -R "$USER":"$USER" . || true
 
       - name: Checksum
         run: |
           cd out
-          sudo sha256sum *.iso | tee SHA256SUMS
+          sha256sum *.iso | tee SHA256SUMS
           ls -lh
 
       - name: Enviar ISO como artefato
@@ -44,13 +58,11 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
-      - name: Enviar logs em caso de falha
-        if: failure()
+      - name: Enviar log completo
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-logs
-          path: |
-            build/build.log
-            build/chroot/var/log
+          name: build-log
+          path: docker-build.log
           if-no-files-found: ignore
-          retention-days: 3
+          retention-days: 7
