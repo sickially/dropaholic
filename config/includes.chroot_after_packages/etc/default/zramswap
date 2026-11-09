@@ -1,0 +1,4 @@
+# 4 GB de RAM: zram comprimido rende muito mais que swap em HD
+ALGO=zstd
+PERCENT=100
+PRIORITY=100

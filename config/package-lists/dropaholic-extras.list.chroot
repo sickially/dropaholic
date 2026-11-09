@@ -1,0 +1,26 @@
+# LibreOffice (com interface GTK e portugues do Brasil)
+libreoffice-writer
+libreoffice-calc
+libreoffice-impress
+libreoffice-draw
+libreoffice-gtk3
+libreoffice-l10n-pt-br
+libreoffice-help-pt-br
+
+# Drivers de video (Intel HD 3000 + nouveau na GT 540M)
+xserver-xorg-video-nouveau
+i965-va-driver
+vdpau-driver-all
+
+# Rede (wifi, ethernet, bluetooth)
+wpasupplicant
+iw
+rfkill
+wireless-regdb
+firmware-ralink
+usb-modeswitch
+
+# Necessarios para adicionar repositorios de terceiros no build
+ca-certificates
+gpg
+apt-transport-https

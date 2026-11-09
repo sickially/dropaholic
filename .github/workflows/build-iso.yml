@@ -1,0 +1,56 @@
+name: Build Dropaholic ISO
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Liberar espaco em disco
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /opt/hostedtoolcache/CodeQL /usr/local/share/boost || true
+          sudo docker image prune --all --force || true
+          df -h /
+
+      - name: Gerar ISO (Debian trixie em container privilegiado)
+        run: |
+          chmod +x build.sh config/hooks/live/*.hook.chroot
+          docker run --rm --privileged \
+            -v "$PWD":/work -w /work \
+            -e DEBIAN_FRONTEND=noninteractive \
+            debian:trixie \
+            bash -c "apt-get update && apt-get install -y sudo && ./build.sh"
+
+      - name: Checksum
+        run: |
+          cd out
+          sudo sha256sum *.iso | tee SHA256SUMS
+          ls -lh
+
+      - name: Enviar ISO como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: dropaholic-iso
+          path: |
+            out/*.iso
+            out/SHA256SUMS
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Enviar logs em caso de falha
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            build/build.log
+            build/chroot/var/log
+          if-no-files-found: ignore
+          retention-days: 3

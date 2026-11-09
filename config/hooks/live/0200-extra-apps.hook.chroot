@@ -1,0 +1,43 @@
+#!/bin/sh
+# Apps de fora do repositorio Debian: Brave, VS Code, Discord e Steam.
+# Roda dentro do chroot durante o build (precisa de internet).
+set -e
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends curl gpg ca-certificates
+install -d -m 0755 /usr/share/keyrings /etc/apt/sources.list.d
+
+# --- Brave (repositorio oficial) ---
+curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
+    https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources \
+    https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
+
+# --- Visual Studio Code (repositorio oficial da Microsoft) ---
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+    | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+cat > /etc/apt/sources.list.d/vscode.sources <<'EOF'
+Types: deb
+URIs: https://packages.microsoft.com/repos/code
+Suites: stable
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/microsoft.gpg
+EOF
+
+apt-get update
+apt-get install -y brave-browser code
+
+# --- Discord (.deb oficial) ---
+curl -fsSL -o /tmp/discord.deb "https://discord.com/api/download?platform=linux&format=deb"
+apt-get install -y /tmp/discord.deb
+rm -f /tmp/discord.deb
+
+# --- Steam (exige arquitetura i386) ---
+dpkg --add-architecture i386
+apt-get update
+apt-get install -y steam-installer
+
+apt-get clean
+rm -rf /var/lib/apt/lists/*

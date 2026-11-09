@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="55%" r="60%">
+      <stop offset="0" stop-color="#2a1458"/>
+      <stop offset="0.5" stop-color="#120a26"/>
+      <stop offset="1" stop-color="#050508"/>
+    </radialGradient>
+    <linearGradient id="d" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c4b5fd"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#g)"/>
+  <path d="M960 330 C 960 330 820 520 820 620 a140 140 0 0 0 280 0 C 1100 520 960 330 960 330 Z" fill="url(#d)" opacity="0.95"/>
+  <text x="960" y="880" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="64" letter-spacing="14" fill="#e8e6f0">DROPAHOLIC</text>
+</svg>

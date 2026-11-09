@@ -1,0 +1,17 @@
+#!/bin/sh
+# Executado dentro do chroot durante o build.
+set -e
+
+# Calamares usa o branding do Dropaholic
+if [ -f /etc/calamares/settings.conf ]; then
+    sed -i 's/^branding:.*/branding: dropaholic/' /etc/calamares/settings.conf
+fi
+
+# Identidade do sistema (mantem ID=debian para nao quebrar ferramentas)
+sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="Dropaholic (Debian 13)"/' /etc/os-release || true
+echo "Dropaholic" > /etc/hostname
+
+# Servicos (live-config cuida do usuario e do autologin na sessao Live)
+systemctl enable NetworkManager.service lightdm.service \
+    tlp.service thermald.service earlyoom.service zramswap.service \
+    bluetooth.service 2>/dev/null || true

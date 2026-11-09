@@ -1,0 +1,30 @@
+---
+componentName: dropaholic
+
+welcomeStyleCalamares: true
+welcomeExpandingLogo: true
+
+strings:
+    productName:         Dropaholic
+    shortProductName:    Dropaholic
+    version:             rolling
+    shortVersion:        rolling
+    versionedName:       Dropaholic
+    shortVersionedName:  Dropaholic
+    bootloaderEntryName: Dropaholic
+    productUrl:          https://example.com/dropaholic
+    supportUrl:          https://example.com/dropaholic
+    releaseNotesUrl:     https://example.com/dropaholic
+
+images:
+    productLogo:         "logo.svg"
+    productIcon:         "logo.svg"
+    productWelcome:      "welcome.svg"
+
+slideshow:               "show.qml"
+
+style:
+    sidebarBackground:    "#0b0b10"
+    sidebarText:          "#e8e6f0"
+    sidebarTextSelect:    "#ffffff"
+    sidebarTextHighlight: "#8b5cf6"

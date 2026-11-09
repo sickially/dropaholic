@@ -1,0 +1,17 @@
+/* Dropaholic: acentos roxos sobre base preta (tema Adwaita-dark) */
+@define-color dp_bg      #0b0b10;
+@define-color dp_surface #14141c;
+@define-color dp_purple  #8b5cf6;
+@define-color dp_purple2 #a78bfa;
+
+window, .background { background-color: @dp_bg; color: #e8e6f0; }
+headerbar, .titlebar, toolbar, menubar { background-image: none; background-color: @dp_surface; border-color: #22222e; }
+button { background-image: none; background-color: #1b1b26; border-color: #2b2b3a; color: #e8e6f0; }
+button:hover { background-color: #242434; }
+button:checked, button.suggested-action { background-color: @dp_purple; color: #fff; border-color: @dp_purple; }
+entry, textview text { background-color: #101018; color: #e8e6f0; border-color: #2b2b3a; }
+selection, *:selected, row:selected, treeview:selected { background-color: @dp_purple; color: #fff; }
+scrollbar slider { background-color: #3a2f66; }
+scrollbar slider:hover { background-color: @dp_purple2; }
+progressbar progress, scale highlight, switch:checked { background-color: @dp_purple; }
+link, *:link { color: @dp_purple2; }
